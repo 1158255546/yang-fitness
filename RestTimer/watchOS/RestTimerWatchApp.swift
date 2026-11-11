@@ -2,20 +2,23 @@ import SwiftUI
 
 @main
 struct RestTimerWatchApp: App {
-    @StateObject private var countdown = RestCountdownController()
+    @StateObject private var runtimeSession: WatchRuntimeSessionCoordinator
+    @StateObject private var countdown: RestCountdownController
 
     init() {
+        let runtime = WatchRuntimeSessionCoordinator()
+        _runtimeSession = StateObject(wrappedValue: runtime)
+        _countdown = StateObject(wrappedValue: RestCountdownController(runtimeSession: runtime))
         WatchConnectivityBridge.shared.Activate()
     }
 
     var body: some Scene {
         WindowGroup {
-            RestCountdownView(controller: countdown)
+            RestCountdownView(controller: countdown, runtimeSession: runtimeSession)
                 .onAppear {
-                    WatchConnectivityBridge.shared.onReceiveMessage = { message in
+                    WatchConnectivityBridge.shared.onReceiveCommand = { message in
                         countdown.Handle(message)
                     }
-                    // TODO: 启动 HKWorkoutSession 或 WKExtendedRuntimeSession，保证锁屏/后台准时
                 }
         }
     }
