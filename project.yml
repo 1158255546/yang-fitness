@@ -35,6 +35,7 @@ targets:
       INFOPLIST_KEY_CFBundleDisplayName: RestTimer
       INFOPLIST_KEY_WKCompanionAppBundleIdentifier: com.yangfitness.RestTimer
       INFOPLIST_KEY_WKRunsIndependentlyOfCompanionApp: false
+      # TODO(Mac): enable HealthKit / Extended Runtime capabilities in Xcode after generate
     dependencies: []
 schemes:
   RestTimer:
